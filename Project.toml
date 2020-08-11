@@ -1,0 +1,13 @@
+name = "UnitfulColors"
+uuid = "4357fcce-f6e0-4f4f-a042-c32686ab45d7"
+authors = ["David Gustavsson <david.e.gustavsson@gmail.com> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
