@@ -5,6 +5,8 @@ import PhysicalConstants.CODATA2018.h
 import PhysicalConstants.CODATA2018.c_0
 import PhysicalConstants.CODATA2018.b
 
+export colormatch
+
 """
 `colormatch(λ::Unitful.Length)`
 
@@ -20,7 +22,7 @@ end
 A color approximately matching frequency `ν`
 """
 function colormatch(ν::Unitful.Frequency)
-    return colormatch(upreferred(PhysicalConstants.CODATA2018.c_0/ν))
+    return colormatch(upreferred(c_0/ν))
 end
 
 """
@@ -29,7 +31,7 @@ end
 A color approximately matching photon energy `E`
 """
 function colormatch(E::Unitful.Energy)
-    return colormatch(upreferred(PhysicalConstants.CODATA2018.h*PhysicalConstants.CODATA2018.c_0/E))
+    return colormatch(upreferred(h*c_0/E))
 end
 """
 `colormatch(T::Unitful.Temperature)`
@@ -41,7 +43,7 @@ If given a second argument `:spectrum`, tries to approximate the actual color sp
 of such a black-body radiator (not implemented)
 """
 function colormatch(T::Unitful.Temperature, interp::Symbol=:peak)
-    interp==:peak && return colormatch(PhysicalConstants.CODATA2018.b/(T+0u"K"))
+    interp==:peak && return colormatch(b/(T+0u"K"))
     interp==:spectrum && begin
         print("Spectrum not yet implemented")
         return colormatch(T,:peak)
