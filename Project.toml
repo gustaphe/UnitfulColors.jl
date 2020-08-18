@@ -9,6 +9,7 @@ PhysicalConstants = "5ad8b20f-a522-5ce9-bfc9-ddf1d5bda6ab"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
+PhysicalConstants = "0.2"
 julia = "1"
 
 [extras]
