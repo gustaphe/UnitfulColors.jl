@@ -36,6 +36,7 @@ A color approximately matching photon energy `E`
 function colormatch(E::Unitful.Energy)
     return colormatch(upreferred(h*c_0/E))
 end
+
 """
 `colormatch(T::Unitful.Temperature)`
 
@@ -50,8 +51,8 @@ function colormatch(T::Unitful.Temperature, interp::Symbol=:peak)
     interp==:peak && return colormatch(b/T)
     if interp==:spectrum
         # Cubic spline from US patent US2003095138 (A1)
-        T<=1667.0u"K" && return XYZ{Float64}(0,0,0.5)
-        T>=25000.0u"K" && return XYZ{Float64}(0,0,0.5)
+        T<=1667.0u"K" && return XYZ{Float64}(0,0,0)
+        T>=25000.0u"K" && return XYZ{Float64}(0,0,0)
         x_c = (T <= 4000.0u"K"
                ? -0.2661239*(1e3u"K"/T)^3 - 0.2343589*(1e3u"K"/T)^2 + 0.8776956*(1e3u"K"/T) + 0.179910
                : -3.0258469*(1e3u"K"/T)^3 + 2.1070379*(1e3u"K"/T)^2 + 0.2226347*(1e3u"K"/T) + 0.240390
@@ -63,7 +64,7 @@ function colormatch(T::Unitful.Temperature, interp::Symbol=:peak)
                   : 3.0817580x_c^3 - 5.87338670x_c^2 + 3.75112997x_c - 0.37001483
                  )
               )
-        Y = 1
+        Y = 0.75
         return xyY{Float64}(x_c,y_c,Y)
     end
 end
