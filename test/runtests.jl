@@ -8,5 +8,5 @@ using Test
     @test typeof(colormatch(600u"THz")) <:  XYZ
     @test typeof(colormatch(2.3u"eV"))  <:  XYZ
     @test typeof(colormatch(5000u"K"))  <:  XYZ
-    @test typeof(colormatch(1.5e4u"K",:spectrum)) <:  xyY
+    @test typeof(colormatch(1.5e4u"K",:spectrum)) <:  XYZ
 end

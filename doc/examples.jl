@@ -28,4 +28,4 @@ pl = plot(
     layout=(5, 1),
 );
 
-savefig(pl, "examples.png")
+savefig(pl, "$(pkgdir(UnitfulColors))/doc/examples.png")

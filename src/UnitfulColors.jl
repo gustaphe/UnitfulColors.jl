@@ -2,7 +2,6 @@ module UnitfulColors
 using Unitful
 import Colors.colormatch
 import Colors.XYZ
-import Colors.xyY
 import PhysicalConstants.CODATA2018.h
 import PhysicalConstants.CODATA2018.c_0
 import PhysicalConstants.CODATA2018.b
@@ -51,35 +50,26 @@ function colormatch(T::Unitful.Temperature, interp::Symbol=:peak; Y=0.75)
     T = T + 0.0u"K"
     interp == :peak && return colormatch(b / T)
     if interp == :spectrum
-        # Cubic spline from US patent US2003095138 (A1)
+        # Cubic spline from (expired) US patent US2003095138 (A1)
+        r = 1 / ustrip(u"kK", T)
         T <= 1667.0u"K" && return XYZ{Float64}(0, 0, 0)
         T >= 25000.0u"K" && return XYZ{Float64}(0, 0, 0)
-        x_c = (
-            if T <= 4000.0u"K"
-                -0.2661239 * (1e3u"K" / T)^3 - 0.2343589 * (1e3u"K" / T)^2 +
-                0.8776956 * (1e3u"K" / T) +
-                0.179910
-            else
-                -3.0258469 * (1e3u"K" / T)^3 +
-                2.1070379 * (1e3u"K" / T)^2 +
-                0.2226347 * (1e3u"K" / T) +
-                0.240390
-            end
-        )
-        y_c = (
+        if T <= 4000.0u"K"
+            x = -0.2661239 * r^3 - 0.2343589 * r^2 + 0.8776956 * r + 0.179910
             if T <= 2222.0u"K"
-                -1.1063814x_c^3 - 1.34811020x_c^2 + 2.18555832x_c - 0.20219683
+                y = -1.1063814x^3 - 1.34811020x^2 + 2.18555832x - 0.20219683
             else
-                (
-                if T <= 4000.0u"K"
-                    -0.9549476x_c^3 - 1.37418593x_c^2 + 2.09137015x_c - 0.16748867
-                else
-                    3.0817580x_c^3 - 5.87338670x_c^2 + 3.75112997x_c - 0.37001483
-                end
-            )
+                y = -0.9549476x^3 - 1.37418593x^2 + 2.09137015x - 0.16748867
             end
-        )
-        return xyY{Float64}(x_c, y_c, Y)
+        else
+            x = -3.0258469 * r^3 + 2.1070379 * r^2 + 0.2226347 * r + 0.240390
+            y = 3.0817580x^3 - 5.87338670x^2 + 3.75112997x - 0.37001483
+        end
+
+        X = Y / y * x
+        Z = Y / y * (1 - x - y)
+
+        return XYZ{Float64}(X, Y, Z)
     end
 end
 
